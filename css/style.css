@@ -237,9 +237,9 @@ body {
 /* ===== GAME CONTAINER ===== */
 .game-container {
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    /* Remove fixed positioning constraints from canvas to allow scaling */
+    display: block;
+    margin: 0 auto;
     background: rgba(0, 0, 0, 0.5);
     border-radius: 15px;
     border: 2px solid var(--neon-cyan);
@@ -247,16 +247,20 @@ body {
         0 0 20px rgba(0, 243, 255, 0.3),
         0 0 40px rgba(0, 243, 255, 0.2),
         inset 0 0 20px rgba(0, 243, 255, 0.1);
-    overflow: hidden;
+
+    /* Maintain original logic for desktop */
+    width: 400px;
+    height: 800px;
 }
 
 #gameCanvas,
 #particleCanvas {
     display: block;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 #particleCanvas {
@@ -517,41 +521,6 @@ body {
     color: var(--neon-cyan);
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 1200px) {
-    .game-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .left-panel,
-    .right-panel {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .stat-box,
-    .next-box,
-    .controls-box {
-        flex: 1;
-        min-width: 200px;
-    }
-
-    .game-title {
-        font-size: 3rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .game-title {
-        font-size: 2rem;
-        letter-spacing: 5px;
-    }
-
-    .highscore-list {
-        grid-template-columns: 1fr;
-    }
-}
-
 /* ===== TOUCH CONTROLS ===== */
 .touch-controls {
     display: none;
@@ -614,80 +583,166 @@ body {
     font-size: 2rem;
 }
 
+/* ===== UTILITY CLASSES ===== */
+.hidden {
+    display: none !important;
+}
+
+/* ===== SCREEN SHAKE ANIMATION ===== */
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translate(-5px, 0);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translate(5px, 0);
+    }
+}
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 @media (max-width: 1024px) {
     .container {
         padding: 10px;
         max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
     }
 
     .game-header {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }
 
     .game-title {
-        font-size: 2.5rem;
+        font-size: 3rem;
         letter-spacing: 5px;
+    }
+
+    .subtitle {
+        font-size: 0.8rem;
+        letter-spacing: 4px;
     }
 
     .game-layout {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 15px;
+        gap: 10px;
+        flex: 1;
+        width: 100%;
     }
 
     .panel {
         width: 100%;
         padding: 10px;
         flex-direction: row;
-        justify-content: space-around;
-        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+    }
+
+    .glass-panel {
+        backdrop-filter: none;
     }
 
     .left-panel .stat-box {
-        min-width: 80px;
-        padding: 5px;
+        min-width: 60px;
+        padding: 5px 10px;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .stat-label {
+        font-size: 0.7rem;
+        margin-bottom: 2px;
     }
 
     .stat-value {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     }
 
     .right-panel {
         order: 3;
-        /* Controls below game */
+        padding-bottom: 20px;
     }
 
-    .controls-box {
+    .controls-box,
+    .next-box {
         display: none;
-        /* Hide keyboard controls on mobile */
-    }
-
-    .touch-controls {
-        display: flex !important;
-        /* Show touch controls */
     }
 
     .game-container {
         order: 2;
+        width: 100%;
+        max-width: 400px;
+        aspect-ratio: 1/2;
+        height: auto;
+        position: relative;
     }
 
-    /* Adjust canvas size for mobile if needed, though strictly 400x800 might be too big for some phones */
     #gameCanvas,
     #particleCanvas {
+        width: 100%;
+        height: 100%;
         max-width: 100%;
-        height: auto;
+        max-height: 65vh;
+        /* Keep it visible on mobile screens */
+        object-fit: contain;
+    }
+
+    .touch-controls {
+        display: flex !important;
+        order: 4;
+        margin-top: 5px;
+        padding-bottom: 20px;
     }
 }
 
 @media (max-width: 480px) {
     .game-title {
         font-size: 2rem;
+        letter-spacing: 2px;
     }
 
-    .btn-large {
-        padding: 10px;
-        font-size: 1rem;
+    .game-container {
+        max-height: 60vh;
+    }
+
+    .touch-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+
+    .rotate-btn {
+        width: 60px;
+        height: 60px;
+    }
+
+    .drop-btn {
+        width: 70px;
+        height: 45px;
+    }
+
+    .highscore-list {
+        grid-template-columns: 1fr;
     }
 }

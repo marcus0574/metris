@@ -47,6 +47,7 @@ class ParticleSystem {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.particles = [];
+        // Canvas internal resolution is set in HTML (400x800)
     }
 
     emit(x, y, color, count = 20) {
