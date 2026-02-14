@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>METRIS - Futuristic Tetris</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="game-header">
+            <h1 class="game-title">
+                <span class="glow-text">M</span>
+                <span class="glow-text">E</span>
+                <span class="glow-text">T</span>
+                <span class="glow-text">R</span>
+                <span class="glow-text">I</span>
+                <span class="glow-text">S</span>
+            </h1>
+            <p class="subtitle">FUTURISTIC EDITION</p>
+        </header>
+
+        <!-- Game Layout -->
+        <div class="game-layout">
+            <!-- Left Panel - Stats -->
+            <div class="panel left-panel glass-panel">
+                <div class="stat-box">
+                    <div class="stat-label">SCORE</div>
+                    <div class="stat-value glow-text" id="score">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">LEVEL</div>
+                    <div class="stat-value glow-text" id="level">1</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">LINES</div>
+                    <div class="stat-value glow-text" id="lines">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">COMBO</div>
+                    <div class="stat-value glow-text combo" id="combo">0</div>
+                </div>
+            </div>
+
+            <!-- Center - Game Canvas -->
+            <div class="game-container">
+                <canvas id="gameCanvas" width="400" height="800"></canvas>
+                <canvas id="particleCanvas" width="400" height="800"></canvas>
+
+                <!-- Game Over Overlay -->
+                <div id="gameOverModal" class="modal hidden">
+                    <div class="modal-content glass-panel">
+                        <h2 class="glow-text">GAME OVER</h2>
+                        <p class="final-score">Score: <span id="finalScore">0</span></p>
+                        <div id="highscoreEntry" class="hidden">
+                            <p class="congrats">🎉 NEUER HIGHSCORE! 🎉</p>
+                            <input type="text" id="playerName" maxlength="15" placeholder="Dein Name"
+                                class="name-input">
+                            <button id="submitScore" class="btn-primary">SPEICHERN</button>
+                        </div>
+                        <button id="restartBtn" class="btn-primary">NEUES SPIEL</button>
+                    </div>
+                </div>
+
+                <!-- Pause Overlay -->
+                <div id="pauseModal" class="modal hidden">
+                    <div class="modal-content glass-panel">
+                        <h2 class="glow-text">PAUSE</h2>
+                        <p>Drücke P zum Fortfahren</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Next & Controls -->
+            <div class="panel right-panel glass-panel">
+                <div class="next-box">
+                    <div class="stat-label">NEXT</div>
+                    <canvas id="nextCanvas" width="120" height="120"></canvas>
+                </div>
+
+                <div class="controls-box">
+                    <h3 class="controls-title">STEUERUNG</h3>
+                    <div class="control-item">
+                        <span class="key">←→</span>
+                        <span>Bewegen</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key">↑</span>
+                        <span>Rotieren</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key">↓</span>
+                        <span>Soft Drop</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key">SPACE</span>
+                        <span>Hard Drop</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key">P</span>
+                        <span>Pause</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key">M</span>
+                        <span>Musik</span>
+                    </div>
+                </div>
+
+                <button id="startBtn" class="btn-primary btn-large">START</button>
+            </div>
+        </div>
+
+        <!-- Touch Controls (Mobile Only) -->
+        <div id="touchControls" class="touch-controls hidden">
+            <div class="touch-row">
+                <button id="btnRotate" class="touch-btn rotate-btn">↻</button>
+            </div>
+            <div class="touch-row middle-row">
+                <button id="btnLeft" class="touch-btn">←</button>
+                <button id="btnDown" class="touch-btn">↓</button>
+                <button id="btnRight" class="touch-btn">→</button>
+            </div>
+            <div class="touch-row">
+                <button id="btnDrop" class="touch-btn drop-btn">⤓</button>
+            </div>
+        </div>
+
+        <!-- Highscore Board -->
+        <div class="highscore-section glass-panel">
+            <h2 class="section-title glow-text">🏆 HIGHSCORES 🏆</h2>
+            <div id="highscoreList" class="highscore-list">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/tetromino.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/highscore.js"></script>
+    <script src="js/game.js"></script>
+</body>
+
+</html>
